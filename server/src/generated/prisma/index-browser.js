@@ -125,9 +125,31 @@ exports.Prisma.UserScalarFieldEnum = {
   dob: 'dob'
 };
 
+exports.Prisma.JournalScalarFieldEnum = {
+  id: 'id',
+  entry: 'entry',
+  mood: 'mood',
+  suggestion: 'suggestion',
+  createdAt: 'createdAt',
+  moodScore: 'moodScore',
+  userId: 'userId'
+};
+
+exports.Prisma.SuggestionScalarFieldEnum = {
+  id: 'id',
+  mood: 'mood',
+  type: 'type',
+  content: 'content',
+  description: 'description'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -140,9 +162,17 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Journal: 'Journal',
+  Suggestion: 'Suggestion'
 };
 
 /**
