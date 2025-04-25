@@ -1,11 +1,16 @@
 import express, {Application} from "express";
-
 const app: Application = express();
+import dotenv from 'dotenv';
 
-import authRoutes from '../routes/authRoutes.ts'
+import authRoutes from './routes/authRoutes'
+import journalRoutes from './routes/journalRoutes'
+dotenv.config()
+app.use(express.json());
+app.use("/", authRoutes);
 
-app.get("/", authRoutes);
+app.use("/home", journalRoutes);
 
-app.listen(3000, () => {
-  console.log("I am listening to port 3000");
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log(`I am running on port: ${PORT}`);
 });

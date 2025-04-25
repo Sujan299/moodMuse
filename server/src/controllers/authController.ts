@@ -1,15 +1,18 @@
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response} from 'express';
 import bcrypt from 'bcryptjs';
-import prisma from '../prisma/client';
+import prisma from '../config/db';
+import jwt from 'jsonwebtoken';
+import { getToken } from '../utils/generateToken';
 interface SignupData {
     username: string;
     email: string;
-    password: number;
+    password: string;
     dob: Date;
 }
-export const signup = async (req: Request<{}, {}, SignupData >, res: Response, next: NextFunction)=>{
+export const signup = async (req: Request<{}, {}, SignupData >, res: Response)=>{
+    console.log(req.body)
     const {username,email, password, dob} = req.body;
-    const existingUser = await prisma.user.findUnique({where : {email}});
+    const existingUser = await prisma.user.findUnique({ where : {email}});
     if(existingUser){
         return res.status(401).json({message: "User already exist!"})
     }
@@ -22,8 +25,10 @@ export const signup = async (req: Request<{}, {}, SignupData >, res: Response, n
             password: hashPassword,
             dob
         }
-    })
-    res.status(201).json({message: "User created successfully" + newUser.id})
+    });
+
+    const token = getToken(newUser);
+    return res.status(201).json({message: "User created successfully" + newUser.id, token})
 }
 interface loginBody{
     email: string;
@@ -39,7 +44,8 @@ export const login = async (req: Request<{},{},loginBody>, res: Response)=>{
     const hashPassword = existingUser.password;
     const isMatch = await bcrypt.compare(password, hashPassword);
     if(isMatch){
-        res.status(200).send({meassge: "Login successfully !"})
+        const token = getToken(existingUser);
+        res.status(200).send({meassge: "Login successfully !", token});
     }else{
         res.status(401).send({message: "can not login "})
     }

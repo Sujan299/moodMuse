@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  // directed prisma to generated prisma/ so we need to import from their to delete , edit etc from table
   output   = "../src/generated/prisma"
 }
 
@@ -18,8 +19,8 @@ datasource db {
 model User {
   id   Int @id @default(autoincrement())
   username   String
-  email   String
+  email   String @unique
   password   String
-  dob   DateTime
+  dob   DateTime?
 }
 
